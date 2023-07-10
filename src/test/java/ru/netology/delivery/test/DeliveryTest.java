@@ -1,11 +1,9 @@
 package ru.netology.delivery.test;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import com.github.javafaker.Faker;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.Keys;
 import ru.netology.delivery.data.DataGenerator;
 
@@ -16,6 +14,7 @@ import java.util.Locale;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import io.qameta.allure.selenide.AllureSelenide;
 
 class DeliveryTest {
 
@@ -24,13 +23,20 @@ class DeliveryTest {
 
     @BeforeAll
     static void setUpAll() {
+
         faker = new Faker(new Locale("ru"));
+        SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
 
     @BeforeEach
     void setup() {
         open("http://localhost:9999");
+    }
+
+    @AfterAll
+    public static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
     }
 
     @Test
